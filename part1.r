@@ -1,13 +1,21 @@
-# 13089020400
+# Load database
+library(haven)
+atlas <- read_dta("~/ec50/EP1/atlas.dta")
+
+# Create Data frames
 candler <- subset(atlas,  state == 13 & county == 089 & tract == 020400)
 dekalb <- subset(atlas,  state == 13 & county == 089)
 georgia <- subset(atlas,  state == 13)
+comm_zone <- subset(atlas, cz == 9100)
+single_not_NA <- subset(comm_zone, !is.na(singleparent_share1990) & !is.na(kfr_pooled_pooled_p25))
+popdensity_not_NA <- subset(comm_zone, !is.na(popdensity2000) & !is.na(kfr_pooled_pooled_p25))
 
-
-# Histogram of kfr_pooled_pooled_p25
+# Install required packages
 if (!require(tidyverse)) install.packages("tidyverse"); library(tidyverse) 
 if (!require(ggplot2)) install.packages("ggplot2"); library(ggplot2)
+if (!require(statar)) install.packages("statar"); library(statar)
 
+# Histogram of kfr_pooled_pooled_p25
 ggplot(atlas) + geom_histogram(aes(x=kfr_pooled_pooled_p25, y=..density..)) 
 
 # Summary stats for kfr_pooled_pooled_p25
@@ -47,6 +55,27 @@ mean(grade_b$kfr_white_pooled_p25, na.rm = TRUE) # 48.75348
 mean(grade_c$kfr_white_pooled_p25, na.rm = TRUE) # 46.32723
 mean(grade_d$kfr_white_pooled_p25, na.rm = TRUE) # 44.11593
 
+# Examining for covariates with kfr_pooled_pooled_p25 within commuting zone
 
+# Measuring against foreign share - correlation, but not linear
+ggplot(comm_zone, aes(x = foreign_share2010, y = kfr_pooled_pooled_p25)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
+
+# Measuring against single parent share - Good correlation
+ggplot(comm_zone, aes(x = singleparent_share1990, y = kfr_pooled_pooled_p25)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
+# Correlation Coefficient
+cor(single_not_NA$kfr_pooled_pooled_p25, single_not_NA$singleparent_share1990)
+# r = -0.6666442
+
+# Measuring against job density - Decent correlation
+ggplot(comm_zone, aes(x = jobs_total_5mi_2015, y = kfr_pooled_pooled_p25)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
+
+# Measuring against high paying job density - Very similar to previous
+ggplot(comm_zone, aes(x = jobs_highpay_5mi_2015, y = kfr_pooled_pooled_p25)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
+
+# Measuring against population density - Decent correlation
+ggplot(comm_zone, aes(x = popdensity2000, y = kfr_pooled_pooled_p25)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
+# Correlation Coefficient
+cor(popdensity_not_NA$kfr_pooled_pooled_p25, popdensity_not_NA$popdensity2000)
+# r = -0.2596039
 
 
