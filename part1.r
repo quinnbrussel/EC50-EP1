@@ -130,6 +130,25 @@ barplot(columns_black, names.arg=black_names,xlab="HOLC Grade",ylab="Upward Mobi
 columns_white <- c(mean(dekalb_d$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_c$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_b$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_a$kfr_white_pooled_p25, na.rm = TRUE))
 barplot(columns_white, names.arg=name_list,xlab="HOLC Grade",ylab="Upward Mobility (Percentile)",col=c("red", "yellow", "blue", "green"), main="Movility vs Neighborhood (White Residents)")
 
-# Creat Bar Graph to show same data for educated residents
-columns_edu <- c(mean(dekalb_d$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_c$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_b$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_a$kfr_white_pooled_p25, na.rm = TRUE))
+# Create Bar Graph to show same data for educated residents
+a_edu <- subset(dekalb_a, frac_coll_plus2010 > 0.5)
+b_edu <- subset(dekalb_b, frac_coll_plus2010 > 0.5)
+c_edu <- subset(dekalb_c, frac_coll_plus2010 > 0.5)
+d_edu <- subset(dekalb_d, frac_coll_plus2010 > 0.5)
+
+columns_edu <- c(mean(d_edu$kfr_pooled_pooled_p25, na.rm = TRUE), mean(c_edu$kfr_pooled_pooled_p25, na.rm = TRUE), mean(b_edu$kfr_pooled_pooled_p25, na.rm = TRUE), mean(a_edu$kfr_pooled_pooled_p25, na.rm = TRUE))
+barplot(columns_edu, names.arg=name_list,xlab="HOLC Grade",ylab="Upward Mobility (Percentile)",col=c("red", "yellow", "blue", "green"), main="Movility vs Neighborhood (Educated Communities)")
+
+# Create Bar Graph to show same data for uneducated residents
+a_nedu <- subset(dekalb_a, frac_coll_plus2010 < 0.5)
+b_nedu <- subset(dekalb_b, frac_coll_plus2010 < 0.5)
+c_nedu <- subset(dekalb_c, frac_coll_plus2010 < 0.5)
+d_nedu <- subset(dekalb_d, frac_coll_plus2010 < 0.5)
+
+nedu_names <- c("Grade D", "Grade C")
+
+columns_nedu <- c(mean(d_nedu$kfr_pooled_pooled_p25, na.rm = TRUE), mean(c_nedu$kfr_pooled_pooled_p25, na.rm = TRUE))
+barplot(columns_nedu, names.arg=nedu_names,xlab="HOLC Grade",ylab="Upward Mobility (Percentile)",col=c("red", "yellow", "blue", "green"), main="Movility vs Neighborhood (Uneducated Communities)")
+
+
 
