@@ -100,9 +100,36 @@ cor(popdensity_not_NA$kfr_pooled_pooled_p25, popdensity_not_NA$popdensity2000)
     # kfr_white_pooled_p25
     ggplot(comm_zone, aes(x = popdensity2000, y = kfr_white_pooled_p25)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
     
-    
-    
-    
-    
+ggplot(comm_zone, aes(x = kfr_pooled_pooled_p25, y = ann_avg_job_growth_2004_2013)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
 
+
+# Create Bar Graph Representing upward mobility of certain regions near Candler Park
+neighborhoods <- c(29.12689, 38.52973, 49.98878)
+name <- c("Edgewood", "Candler Park", "Druid Hills")
+
+barplot(neighborhoods, names.arg=name,xlab="Neighborhood",ylab="Upward Mobility (Percentile)",col=c("red", "yellow", "green"), main="Movility vs Neighborhood")
+
+# Subsets of Dekalb County by HOLC
+dekalb_a <- subset(comm_zone, HOLC_A > 0.5 & !is.na(HOLC_A))
+dekalb_b <- subset(comm_zone, HOLC_B > 0.5 & !is.na(HOLC_B))
+dekalb_c <- subset(comm_zone, HOLC_C > 0.5 & !is.na(HOLC_C))
+dekalb_d <- subset(comm_zone, HOLC_D > 0.5 & !is.na(HOLC_D))
+
+# Create Bar Graph to show HOLC vs p25
+columns <- c(mean(dekalb_d$kfr_pooled_pooled_p25, na.rm = TRUE), mean(dekalb_c$kfr_pooled_pooled_p25, na.rm = TRUE), mean(dekalb_b$kfr_pooled_pooled_p25, na.rm = TRUE), mean(dekalb_a$kfr_pooled_pooled_p25, na.rm = TRUE))
+name_list <- c("Grade D", "Grade C", "Grade B", "Grade A")
+
+barplot(columns, names.arg=name_list,xlab="HOLC Grade",ylab="Upward Mobility (Percentile)",col=c("red", "yellow", "blue", "green"), main="Movility vs Neighborhood")
+
+# Create Bar Graph to show same data for black residents
+black_names <- c("Grade D", "Grade C", "Grade B")
+columns_black <- c(mean(dekalb_d$kfr_black_pooled_p25, na.rm = TRUE), mean(dekalb_c$kfr_black_pooled_p25, na.rm = TRUE), mean(dekalb_b$kfr_black_pooled_p25, na.rm = TRUE))
+barplot(columns_black, names.arg=black_names,xlab="HOLC Grade",ylab="Upward Mobility (Percentile)",col=c("red", "yellow", "blue"), main="Movility vs Neighborhood (Black Residents)")
+
+# Create Bar Graph to show same data for white residents
+columns_white <- c(mean(dekalb_d$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_c$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_b$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_a$kfr_white_pooled_p25, na.rm = TRUE))
+barplot(columns_white, names.arg=name_list,xlab="HOLC Grade",ylab="Upward Mobility (Percentile)",col=c("red", "yellow", "blue", "green"), main="Movility vs Neighborhood (White Residents)")
+
+# Creat Bar Graph to show same data for educated residents
+columns_edu <- c(mean(dekalb_d$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_c$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_b$kfr_white_pooled_p25, na.rm = TRUE), mean(dekalb_a$kfr_white_pooled_p25, na.rm = TRUE))
 
