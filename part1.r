@@ -79,3 +79,30 @@ cor(popdensity_not_NA$kfr_pooled_pooled_p25, popdensity_not_NA$popdensity2000)
 # r = -0.2596039
 
 
+# Now, we consider the two relationships that stuck out by racial group
+# Starting with single parent measures
+    # kfr_black_pooled_p25 not null - similar pattern, lower intercept flatter slope
+    black_not_NA <- subset(comm_zone, !is.na(kfr_black_pooled_p25) & !is.na(singleparent_share1990))
+    ggplot(comm_zone, aes(x = singleparent_share1990, y = kfr_black_pooled_p25)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
+    cor(black_not_NA$kfr_black_pooled_p25, black_not_NA$popdensity2000)
+    # r = -0.149883
+
+    # kfr_white_pooled_p25 - similar pattern, higher intercept, steeper slope
+    white_not_NA <- subset(comm_zone, !is.na(kfr_white_pooled_p25) & !is.na(singleparent_share1990))
+    ggplot(comm_zone, aes(x = singleparent_share1990, y = kfr_white_pooled_p25)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
+    cor(white_not_NA$kfr_white_pooled_p25, white_not_NA$popdensity2000)
+    # r = 0.02174442?
+    
+# Now considering versus population density
+    # kfr_black_pooled_p25
+    ggplot(comm_zone, aes(x = popdensity2000, y = kfr_black_pooled_p25)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
+    
+    # kfr_white_pooled_p25
+    ggplot(comm_zone, aes(x = popdensity2000, y = kfr_white_pooled_p25)) + stat_binmean(n = 20) + stat_smooth(method = "lm", se = FALSE)
+    
+    
+    
+    
+    
+
+
